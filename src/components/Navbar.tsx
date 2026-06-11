@@ -101,7 +101,7 @@ export default function Navbar() {
       {/* Mobile Drawer/Dropdown */}
       <div
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out border-b border-border-light bg-white ${
-          isOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
         }`}
       >
         <ul className="flex flex-col list-none m-0 px-8 py-4 gap-4">

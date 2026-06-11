@@ -1,23 +1,48 @@
-// Grid cells config: each cell has a unique visual character
-// Replace the `img` values with your own project screenshots
-type GridCell = {
-  image: string
-  overlay?: boolean
-  label?: string
-  brightness: number
+﻿'use client'
+
+// Replace image paths with your own project screenshots
+const COL_IMAGES = {
+  1: ['/tech_network.png', '/tech_code.png',   '/tech_server.png', '/tech_network.png'],
+  2: ['/tech_server.png',  '/tech_code.png',   '/tech_network.png', '/tech_server.png'],
+  3: ['/tech_code.png',    '/tech_network.png', '/tech_server.png', '/tech_code.png'],
 }
 
-const GRID_CELLS: GridCell[] = [
-  { image: '/tech_network.png', brightness: 0.75 },
-  { image: '/tech_code.png',    brightness: 0.65 },
-  { image: '/tech_server.png',  brightness: 0.80 },
-  { image: '/tech_code.png',    brightness: 0.85 },
-  { image: '/tech_network.png', brightness: 1.00, overlay: true, label: 'PROYEK' },
-  { image: '/tech_server.png',  brightness: 0.82 },
-  { image: '/tech_network.png', brightness: 0.70 },
-  { image: '/tech_server.png',  brightness: 0.68 },
-  { image: '/tech_code.png',    brightness: 0.78 },
-]
+interface ScrollColProps {
+  images: string[]
+  direction: 'up' | 'down'
+  duration: number
+}
+
+function ScrollCol({ images, direction, duration }: ScrollColProps) {
+  const doubled = [...images, ...images]
+
+  return (
+    <div className="overflow-hidden w-full h-full">
+      <div
+        className="flex flex-col gap-2"
+        style={{
+          animation: `${direction === 'up' ? 'scrollUp' : 'scrollDown'} ${duration}s linear infinite`,
+        }}
+      >
+        {doubled.map((src, i) => (
+          <div
+            key={i}
+            className="aspect-square w-full flex-shrink-0 overflow-hidden bg-slate-900"
+          >
+            <img
+              src={src}
+              alt=""
+              aria-hidden="true"
+              className="w-full h-full object-cover"
+              style={{ filter: 'grayscale(15%) brightness(0.96)' }}
+              draggable={false}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export default function Hero() {
   return (
@@ -25,7 +50,7 @@ export default function Hero() {
       <div className="container-pad w-full py-12 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-          {/* ── LEFT: Text content ── */}
+          {/* â”€â”€ LEFT: Text content â”€â”€ */}
           <div className="flex flex-col gap-6">
             <h1 className="font-display text-4xl sm:text-5xl lg:text-display-lg text-ink leading-[1.1] tracking-tight">
               Halo, Saya{' '}
@@ -44,31 +69,15 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* ── RIGHT: 3×3 Image grid ── */}
-          <div className="hidden md:grid grid-cols-3 gap-2 w-full max-w-md mx-auto lg:max-w-none">
-            {GRID_CELLS.map((cell, i) => (
-              <div
-                key={i}
-                className="aspect-square rounded-sm overflow-hidden relative"
-                style={{ opacity: cell.brightness }}
-              >
-                <img
-                  src={cell.image}
-                  alt=""
-                  aria-hidden="true"
-                  className="w-full h-full object-cover"
-                  style={{ filter: 'grayscale(15%) brightness(0.96)' }}
-                />
-                {/* Dark overlay + label for featured cell */}
-                {cell.overlay && (
-                  <div className="absolute inset-0 bg-ink/60 flex items-center justify-center">
-                    <span className="text-white text-xs font-semibold tracking-[0.2em] uppercase">
-                      {cell.label}
-                    </span>
-                  </div>
-                )}
-              </div>
-            ))}
+          {/* â”€â”€ RIGHT: Animated scroll grid â”€â”€ */}
+          <div className="hidden md:flex gap-2 w-full max-w-md mx-auto lg:max-w-none h-[420px] relative" role="region" aria-label="Galeri teknologi animasi">
+            {/* fade top & bottom â€” sesuaikan warna dengan background section */}
+            <div className="absolute inset-x-0 top-0 h-16 z-10 pointer-events-none" style={{ background: 'linear-gradient(to bottom, #F9F9F9 0%, transparent 100%)' }} />
+            <div className="absolute inset-x-0 bottom-0 h-16 z-10 pointer-events-none" style={{ background: 'linear-gradient(to top, #F9F9F9 0%, transparent 100%)' }} />
+
+            <ScrollCol images={COL_IMAGES[1]} direction="up"   duration={18}  />
+            <ScrollCol images={COL_IMAGES[2]} direction="down" duration={24} />
+            <ScrollCol images={COL_IMAGES[3]} direction="up"   duration={20}  />
           </div>
 
         </div>
@@ -76,3 +85,6 @@ export default function Hero() {
     </section>
   )
 }
+
+
+

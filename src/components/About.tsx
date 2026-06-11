@@ -54,11 +54,12 @@ export default function About() {
 
           {/* ── RIGHT: Photo ── */}
           <div className="flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-sm">
+            <div className="relative w-full max-w-xs sm:max-w-sm">
               <img
                 src={PHOTO_URL}
                 alt="Foto profil"
                 className="w-full rounded-xl object-cover aspect-[4/5]"
+                loading="lazy"
                 style={{
                   boxShadow: '0px 24px 48px rgba(0, 0, 0, 0.10)',
                   filter: 'contrast(1.03)',

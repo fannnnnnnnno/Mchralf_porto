@@ -13,7 +13,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-border-light bg-surface-mid">
-      <div className="container-pad py-6 flex flex-col md:flex-row gap-4 md:gap-0 items-center justify-between text-center md:text-left">
+      <div className="container-pad py-6 flex flex-col md:flex-row gap-6 md:gap-0 items-center justify-between text-center md:text-left">
 
         {/* Logo mark */}
         <span className="text-ink-subtle" aria-hidden="true">

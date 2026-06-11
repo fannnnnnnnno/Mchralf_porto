@@ -1,206 +1,236 @@
 'use client'
 
 import { useState } from 'react'
+import { Document, Page, pdfjs } from 'react-pdf'
+import 'react-pdf/dist/Page/AnnotationLayer.css'
+import 'react-pdf/dist/Page/TextLayer.css'
 
-// ── Certifications ────────────────────────────────────────────────────────────
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString()
 
 interface Cert {
   name: string
   institution: string
   year: string
-  certificateUrl: string // URL gambar atau PDF sertifikat
+  certificateUrl: string
 }
 
 const CERTS: Cert[] = [
   {
-    name: 'Fundamental of Associate Network administrator',
+    name: 'Fundamental of Associate Network Administrator',
     institution: 'Digital Talent Academy',
     year: 'Tahun 2026',
-    certificateUrl: 'https://via.pappppppplaceholder.com/600x400/6366f1/ffffff?text=Fundamental+Certificate', // Ganti dengan path lokal atau URL gambar/PDF
+    certificateUrl: '/public/sertif-digitalent-network-adm1.pdf',
   },
   {
-    name: 'Intermediate of Associate Network administrator',
+    name: 'Intermediate of Associate Network Administrator',
     institution: 'Digital Talent Academy',
     year: 'Tahun 2026',
-    certificateUrl: 'https://via.placeholder.com/600x400/6366f1/ffffff?text=Intermediate+Certificate', // Ganti dengan path lokal atau URL gambar/PDF
+    certificateUrl: '/public/sertif-digitalent-network-adm2.pdf',
   },
-  // ✅ Tambah sertifikat baru di sini:
-  // {
-  //   name: 'Nama Sertifikasi',
-  //   institution: 'Nama Institusi',
-  //   year: 'Tahun',
-  //   certificateUrl: '/certificates/nama-file.jpg', // atau .pdf
-  // },
 ]
 
-// Rosette / badge icon matching the design
 function BadgeIcon() {
   return (
-    <svg
-      width="32"
-      height="32"
-      viewBox="0 0 32 32"
-      fill="none"
-      className="text-primary"
-    >
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="text-primary">
       <circle cx="16" cy="16" r="12" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="16" cy="16" r="7" stroke="currentColor" strokeWidth="1.5" />
-      {/* Top ribbon tabs */}
-      <path
-        d="M16 4V7M22 5.5L20.5 8M10 5.5L11.5 8"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
+      <circle cx="16" cy="16" r="7"  stroke="currentColor" strokeWidth="1.5" />
+      <path d="M16 4V7M22 5.5L20.5 8M10 5.5L11.5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   )
 }
 
-// Modal untuk menampilkan sertifikasi
-interface CertificationModalProps {
+interface ModalProps {
   isOpen: boolean
   cert: Cert | null
   onClose: () => void
 }
 
-function CertificationModal({ isOpen, cert, onClose }: CertificationModalProps) {
+function CertificationModal({ isOpen, cert, onClose }: ModalProps) {
+  const [numPages, setNumPages] = useState<number>(0)
+  const [currentPage, setCurrentPage] = useState(1)
+
   if (!isOpen || !cert) return null
 
   const isPDF = cert.certificateUrl.toLowerCase().endsWith('.pdf')
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-      {/* Modal container */}
-      <div className="relative bg-surface-white rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-auto">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="relative bg-surface-white rounded-xl shadow-card-hover w-full max-w-2xl max-h-[90vh] flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
-        <div className="sticky top-0 bg-surface-white border-b border-border-light p-6 flex items-center justify-between">
-          <h3 className="font-display font-semibold text-ink text-lg">
+        <div className="flex items-center justify-between gap-4 p-5 border-b border-border-light flex-shrink-0">
+          <h3 className="font-display font-semibold text-ink text-base leading-snug">
             {cert.name}
           </h3>
           <button
             onClick={onClose}
-            className="text-ink-subtle hover:text-ink transition-colors"
-            aria-label="Close"
+            className="shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-low transition-colors text-ink-subtle hover:text-ink"
+            aria-label="Tutup"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M18 6L6 18M6 6L18 18"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 flex items-center justify-center">
+        <div className="flex-1 overflow-y-auto p-6 flex flex-col items-center gap-4 bg-surface">
+
           {isPDF ? (
-            <iframe
-              src={cert.certificateUrl}
-              title={cert.name}
-              className="w-full h-[500px] rounded-lg border border-border-light"
-            />
+            <>
+              <Document
+                file={cert.certificateUrl}
+                onLoadSuccess={({ numPages }) => {
+                  setNumPages(numPages)
+                  setCurrentPage(1)
+                }}
+                loading={
+                  <div className="flex items-center justify-center h-64 text-ink-subtle text-sm">
+                    Memuat sertifikat...
+                  </div>
+                }
+                error={
+                  <div className="flex items-center justify-center h-64 text-ink-subtle text-sm">
+                    Gagal memuat PDF.
+                  </div>
+                }
+                noData={
+                  <div className="flex items-center justify-center h-64 text-ink-subtle text-sm">
+                    File PDF tidak ditemukan.
+                  </div>
+                }
+              >
+                <Page
+                  pageNumber={currentPage}
+                  width={Math.min(560, window.innerWidth - 80)}
+                  renderTextLayer={false}
+                  renderAnnotationLayer={false}
+                  className="rounded-lg overflow-hidden shadow-card"
+                />
+              </Document>
+
+              {/* Page navigation */}
+              {numPages > 1 && (
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1.5 text-sm rounded-lg border border-border-light hover:bg-surface-low disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  >
+                    ← Sebelumnya
+                  </button>
+                  <span className="text-sm text-ink-subtle">
+                    {currentPage} / {numPages}
+                  </span>
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.min(numPages, p + 1))}
+                    disabled={currentPage === numPages}
+                    className="px-3 py-1.5 text-sm rounded-lg border border-border-light hover:bg-surface-low disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Selanjutnya →
+                  </button>
+                </div>
+              )}
+            </>
           ) : (
             <img
               src={cert.certificateUrl}
               alt={cert.name}
-              className="max-w-full h-auto rounded-lg"
+              className="max-w-full h-auto rounded-lg shadow-card"
             />
           )}
         </div>
 
         {/* Footer */}
-        <div className="border-t border-border-light p-6 flex items-center justify-between">
-          <div className="flex flex-col gap-1">
+        <div className="border-t border-border-light p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between flex-shrink-0 gap-4 sm:gap-0">
+          <div>
             <p className="text-sm text-ink-subtle">{cert.institution}</p>
             <p className="text-sm font-semibold text-primary">{cert.year}</p>
           </div>
-          <button
-            onClick={onClose}
-            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
-          >
-            Tutup
-          </button>
+          <div className="flex items-center gap-2 w-full sm:w-auto flex-wrap">
+            <a
+              href={cert.certificateUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 sm:flex-none px-4 py-2 text-sm border border-border-light rounded-lg hover:bg-surface-low transition-colors text-ink-subtle text-center"
+              aria-label={`Buka ${cert.name} di tab baru`}
+            >
+              Buka
+            </a>
+            <button
+              onClick={onClose}
+              className="flex-1 sm:flex-none px-5 py-2 bg-primary text-white text-sm rounded-lg hover:bg-primary-dark transition-colors"
+              aria-label="Tutup modal sertifikat"
+            >
+              Tutup
+            </button>
+          </div>
         </div>
       </div>
     </div>
   )
 }
 
+function getGridClass(count: number): string {
+  if (count === 1) return 'grid grid-cols-1 max-w-xs mx-auto'
+  if (count === 2) return 'grid grid-cols-1 md:grid-cols-2 max-w-2xl mx-auto'
+  return 'grid grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto'
+}
+
 export default function Certifications() {
   const [selectedCert, setSelectedCert] = useState<Cert | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen]   = useState(false)
 
-  const handleViewCertificate = (cert: Cert) => {
-    setSelectedCert(cert)
-    setIsModalOpen(true)
-  }
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setSelectedCert(null)
-  }
+  const handleOpen  = (cert: Cert) => { setSelectedCert(cert); setIsModalOpen(true) }
+  const handleClose = ()           => { setIsModalOpen(false); setSelectedCert(null) }
 
   return (
     <section id="certifications" className="py-16 md:py-32">
       <div className="container-pad">
 
-        {/* Section heading */}
         <div className="text-center mb-16">
           <h2 className="section-title">Sertifikat</h2>
           <div className="section-accent" />
         </div>
 
-        {/* Responsive grid - 3 kolom pada tablet/desktop, centered jika < 3 */}
-        <div className="flex justify-center">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full md:w-fit justify-center md:justify-start">
-            {CERTS.map((cert) => (
-              <div
-                key={cert.name}
-                className="group relative flex flex-col items-center text-center gap-4 p-8
-                  bg-surface-white rounded-lg border border-border-light
-                  shadow-card hover:shadow-card-hover hover:-translate-y-0.5
-                  transition-all duration-300 cursor-pointer
-                  w-full md:w-80"
-              >
-                <BadgeIcon />
-
-                <div className="flex flex-col gap-1">
-                  <h3 className="font-display font-semibold text-base text-ink leading-snug">
-                    {cert.name}
-                  </h3>
-                  <p className="text-sm text-ink-subtle">{cert.institution}</p>
-                </div>
-
-                <span className="text-sm font-semibold text-primary">
-                  {cert.year}
-                </span>
-
-                {/* Hover button overlay */}
-                <button
-                  onClick={() => handleViewCertificate(cert)}
-                  className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100
-                    transition-opacity duration-300 bg-black bg-opacity-0 group-hover:bg-opacity-30
-                    rounded-lg backdrop-blur-sm"
-                >
-                  <div className="px-6 py-2 bg-primary text-white font-semibold rounded-lg
-                    hover:bg-primary-dark transition-colors">
-                    Lihat Sertifikasi
-                  </div>
-                </button>
+        <div className={`${getGridClass(CERTS.length)} gap-6 md:gap-8`}>
+          {CERTS.map((cert) => (
+            <div
+              key={cert.name}
+              onClick={() => handleOpen(cert)}
+              className="group relative flex flex-col items-center text-center gap-4 p-8
+                bg-surface-white rounded-lg border border-border-light
+                shadow-card hover:shadow-card-hover hover:-translate-y-0.5
+                transition-all duration-300 cursor-pointer"
+            >
+              <BadgeIcon />
+              <div className="flex flex-col gap-1">
+                <h3 className="font-display font-semibold text-base text-ink leading-snug">
+                  {cert.name}
+                </h3>
+                <p className="text-sm text-ink-subtle">{cert.institution}</p>
               </div>
-            ))}
-          </div>
+              <span className="text-sm font-semibold text-primary">{cert.year}</span>
+
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100
+                transition-opacity duration-300 rounded-lg bg-black/30 backdrop-blur-sm">
+                <span className="px-6 py-2 bg-primary text-white font-semibold rounded-lg text-sm">
+                  Lihat Sertifikasi
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Certification Modal */}
-        <CertificationModal
-          isOpen={isModalOpen}
-          cert={selectedCert}
-          onClose={handleCloseModal}
-        />
-
+        <CertificationModal isOpen={isModalOpen} cert={selectedCert} onClose={handleClose} />
       </div>
     </section>
   )
