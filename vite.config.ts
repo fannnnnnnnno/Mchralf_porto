@@ -11,5 +11,6 @@ export default defineConfig({
     }),
     react(),
   ],
+  // Pastikan sitemap.xml & robots.txt ikut ter-copy ke dist
+  publicDir: 'public',
 })
-

@@ -1,11 +1,15 @@
-// ── Footer ────────────────────────────────────────────────────────────────────
-// Update SOCIAL_LINKS with your real profile URLs.
+// ── Footer ──────────────────────────────────────────────────────────────
+// Ganti semua href dengan URL/kontak asli kamu.
+
+// ⬇ Ganti nomor WA kamu di sini (format: 628xxx tanpa + atau spasi)
+const WA_NUMBER = '62881027133772'
+const WA_MESSAGE = encodeURIComponent('Halo,saya tertarik untuk berdiskusi lebih lanjut.')
 
 const SOCIAL_LINKS = [
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/username' },
-  { label: 'GitHub', href: 'https://github.com/username' },
-  { label: 'Twitter', href: 'https://twitter.com/username' },
-  { label: 'Email', href: 'mailto:kamu@email.com' },
+  { label: 'LinkedIn',  href: 'https://linkedin.com/in/username' },
+  { label: 'GitHub',    href: 'https://github.com/fannnnnnnnno' },
+  { label: 'WhatsApp',  href: `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}` },
+  { label: 'Email',     href: 'mailto:kamu@email.com' },
 ] as const
 
 export default function Footer() {
@@ -17,14 +21,9 @@ export default function Footer() {
 
         {/* Logo mark */}
         <span className="text-ink-subtle" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path
-              d="M8 1.5V14.5M1.5 8H14.5"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
+           <a href="#hero" aria-label="Kembali ke atas" className="text-ink hover:text-primary transition-colors duration-200">
+          <p className="text-sm font-bold tracking-wide">Mchralf</p>
+        </a>
         </span>
 
         {/* Social links */}

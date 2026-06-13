@@ -2,23 +2,110 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MchrAlf | Web Developer Portfolio</title>
-    <!-- SEO -->
-    <meta name="description" content="Portfolio Muhammad Ralf — fresh graduate TKJ, web developer React, TypeScript, dan Tailwind CSS." />
-    <meta name="keywords" content="portfolio, web developer, react developer, typescript, tailwind, surabaya" />
-    <meta name="author" content="Muhammad Ralf" />
-    <meta name="robots" content="index, follow" />
+
+    <!-- ═══════════════════════════════════════════
+         FAVICON
+    ═══════════════════════════════════════════ -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- ═══════════════════════════════════════════
+         PRIMARY SEO
+    ═══════════════════════════════════════════ -->
+    <title>Muhammad Afan Mucharrom — Network Administrator & Web Developer | Bojonegoro</title>
+    <meta name="description" content="Portfolio Muhammad Afan Mucharrom, fresh graduate TKJ dengan pengalaman magang Teknisi Fiber Optic di PT. Garuda Media Telematika. Tersedia untuk posisi Network Administrator dan Web Developer." />
+    <meta name="keywords" content="network administrator, web developer, teknisi fiber optic, TKJ, React, TypeScript, MikroTik, Cisco, Proxmox, Bojonegoro, Jawa Timur, fresh graduate IT" />
+    <meta name="author" content="Muhammad Afan Mucharrom" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <link rel="canonical" href="https://www.mchralf.my.id/" />
-    <meta property="og:title" content="MchrAlf | Web Developer Portfolio" />
-    <meta property="og:description" content="Portfolio Muhammad Ralf — web developer React, TypeScript dan Tailwind CSS." />
-    <meta property="og:url" content="https://www.mchralf.my.id" />
-    <meta property="og:type" content="website" />
+
+    <!-- ═══════════════════════════════════════════
+         OPEN GRAPH (Facebook, LinkedIn, WhatsApp)
+    ═══════════════════════════════════════════ -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:url"         content="https://www.mchralf.my.id/" />
+    <meta property="og:title"       content="Muhammad Afan Mucharrom — Network Administrator & Web Developer" />
+    <meta property="og:description" content="Fresh graduate TKJ dengan pengalaman magang Teknisi Fiber Optic di PT. Garuda Media Telematika. Siap membantu di bidang Network Administration dan Web Development." />
+    <meta property="og:image"       content="https://www.mchralf.my.id/og-image.png" />
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt"   content="Muhammad Afan Mucharrom - Network Administrator & Web Developer" />
+    <meta property="og:locale"      content="id_ID" />
+    <meta property="og:site_name"   content="MchrAlf Portfolio" />
+
+    <!-- ═══════════════════════════════════════════
+         TWITTER / X CARD
+    ═══════════════════════════════════════════ -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="Muhammad Afan Mucharrom — Network Administrator & Web Developer" />
+    <meta name="twitter:description" content="Fresh graduate TKJ dengan pengalaman magang Teknisi Fiber Optic di PT. Garuda Media Telematika." />
+    <meta name="twitter:image"       content="https://www.mchralf.my.id/og-image.png" />
+
+    <!-- ═══════════════════════════════════════════
+         STRUCTURED DATA (JSON-LD)
+         Person + WebSite schema
+    ═══════════════════════════════════════════ -->
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"Person","name":"Muhammad Ralf","url":"https://www.mchralf.my.id","jobTitle":"Web Developer","address":{"@type":"PostalAddress","addressLocality":"Surabaya","addressCountry":"ID"}}
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://www.mchralf.my.id/#person",
+          "name": "Muhammad Afan Mucharrom",
+          "alternateName": "MchrAlf",
+          "url": "https://www.mchralf.my.id",
+          "image": "https://www.mchralf.my.id/avatar.png",
+          "jobTitle": ["Network Administrator", "Web Developer"],
+          "description": "Fresh graduate Teknik Komputer dan Jaringan dengan pengalaman magang sebagai Teknisi Fiber Optic di PT. Garuda Media Telematika.",
+          "alumniOf": {
+            "@type": "EducationalOrganization",
+            "name": "SMK Teknik Komputer dan Jaringan"
+          },
+          "worksFor": {
+            "@type": "Organization",
+            "name": "PT. Garuda Media Telematika"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Bojonegoro",
+            "addressRegion": "Jawa Timur",
+            "addressCountry": "ID"
+          },
+          "knowsAbout": [
+            "Network Administration",
+            "Fiber Optic",
+            "MikroTik",
+            "Cisco",
+            "Linux Server",
+            "Proxmox VE",
+            "React",
+            "TypeScript",
+            "Tailwind CSS",
+            "Web Development"
+          ],
+          "sameAs": [
+            "https://github.com/fannnnnnnnno",
+            "https://linkedin.com/in/username"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.mchralf.my.id/#website",
+          "url": "https://www.mchralf.my.id",
+          "name": "MchrAlf Portfolio",
+          "description": "Portfolio profesional Muhammad Afan Mucharrom — Network Administrator & Web Developer",
+          "author": { "@id": "https://www.mchralf.my.id/#person" },
+          "inLanguage": "id-ID"
+        }
+      ]
+    }
     </script>
 
+    <!-- ═══════════════════════════════════════════
+         PERFORMANCE
+    ═══════════════════════════════════════════ -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -31,4 +118,3 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
